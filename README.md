@@ -1,17 +1,34 @@
-Hadoop Utils
-============
+Source code for Hadoop in Practice, Second Edition
+==================================================
 
-A set of Hadoop utilities to make working with Hadoop a little easier. The utilities can be
-called from your Hadoop application code, and in addition some can be called directly from the
-command-line.
+This project contains the source code that accompanies the book "Hadoop in Practice, Second Edition".
+
+The book is currently in [MEAP](http://www.manning.com/about/meap.html) form, which gives you early access to chapters
+as they are being completed. I'll add a link to the book once it's up on Manning's site.
 
 ## License
 
-Apache version 2.0 (for more details look at [LICENSE](https://github.com/alexholmes/hadoop-utils/blob/master/LICENSE)).
+Apache version 2.0 (for more details look at the [license](LICENSE)).
 
 ## Usage
 
-### For integrating into your application code
+### Tarball
+
+The easiest way to start working with the examples is to download a tarball distribution of this project.
+Doing so will mean that running your first example is just three steps away:
+
+1. Click on "releases" and download the most recent tarball.
+2. Extract the contents ot the tarball, i.e. `tar -xzvf hip-<version>-package.tar.gz`
+3. Run the "hello world" example, which is
+
+```ruby
+$ cd hip-<version>
+$
+```
+Click on the "releases" link
+
+
+### Building your own distribution
 
 To get started, simply:
 

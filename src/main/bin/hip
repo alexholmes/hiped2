@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script to launch examples from the book "Hadoop in Practice".
+
 bin=`dirname "${HIP_BIN-$0}"`
 bin=`cd "$bin"; pwd`
 
@@ -17,9 +19,24 @@ fi
 CLASS=$1
 shift
 
-OUR_HADOOP_CLASSPATH=""
+LIBJARS=""
 for file in `find ${bin}/lib -type f`; do
-  OUR_HADOOP_CLASSPATH=${OUR_HADOOP_CLASSPATH},$file
+  LIBJARS=${LIBJARS},$file
 done
 
-hadoop jar target/hip-2.0.0.jar ${CLASS} -libjars ${OUR_HADOOP_CLASSPATH} "$@"
+HIP_JAR=${bin}/`ls -1 | grep "hip-[0-9\.]+\.jar"`
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  HIP_JAR=${bin}/`find -E . -type f -regex '.*hip\-[0-9\.]+.jar'`
+else
+  HIP_JAR=${bin}/`find . -type f -regex '.*hip\-[0-9\.]+.jar'`
+fi
+
+if [ ! -f ${HIP_JAR} ]; then
+  echo "Unable to locate the HiP JAR - only OSX and GNU Linux systems are supported."
+  exit 2
+fi
+
+export HADOOP_CLASSPATH=`echo ${LIBJARS} | sed s/,/:/g`
+
+hadoop jar ${HIP_JAR} ${CLASS} -libjars ${LIBJARS} "$@"
