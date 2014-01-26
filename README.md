@@ -18,7 +18,11 @@ The easiest way to start working with the examples is to download a tarball dist
 Doing so will mean that running your first example is just three steps away:
 
 1. Go to the [releases](https://github.com/alexholmes/hiped2/releases) and download the most recent tarball.
-2. Extract the contents ot the tarball, i.e. `tar -xzvf hip-<version>-package.tar.gz`
+2. Extract the contents ot the tarball.
+
+```bash
+$ tar -xzvf hip-<version>-package.tar.gz
+```
 3. Run the "hello world" example, which is
 
 ```bash
@@ -55,7 +59,8 @@ $ cd hiped2
 $ mvn package
 ```
 
-The JAR's and tarball will be under the `target` directory.
+The JAR's and tarball will be under the `target` directory. Now you can follow the instructions in the
+"Tarball" section above to explode the tarball and run an example.
 
 ## What's next?
 
