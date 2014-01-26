@@ -20,9 +20,8 @@ Doing so will mean that running your first example is just three steps away:
 1. Go to the [releases](https://github.com/alexholmes/hiped2/releases) and download the most recent tarball.
 2. Extract the contents ot the tarball.
 
-```bash
-$ tar -xzvf hip-<version>-package.tar.gz
-```
+        $ tar -xzvf hip-<version>-package.tar.gz
+
 3. Run the "hello world" example, which is
 
 ```bash
