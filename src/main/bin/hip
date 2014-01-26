@@ -1,0 +1,25 @@
+#!/bin/bash
+
+bin=`dirname "${HIP_BIN-$0}"`
+bin=`cd "$bin"; pwd`
+
+function print_usage(){
+  echo "Usage: $(basename $0) <class> ARGS"
+  echo "  <class>   the fully-qualified classname of the example you want to run"
+  echo "  ARGS      any arguments specific to the example"
+}
+
+if [ "$#" == "0" ]; then
+    print_usage
+    exit 1
+fi
+
+CLASS=$1
+shift
+
+OUR_HADOOP_CLASSPATH=""
+for file in `find ${bin}/lib -type f`; do
+  OUR_HADOOP_CLASSPATH=${OUR_HADOOP_CLASSPATH},$file
+done
+
+hadoop jar target/hip-2.0.0.jar ${CLASS} -libjars ${OUR_HADOOP_CLASSPATH} "$@"
