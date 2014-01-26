@@ -19,7 +19,6 @@ Doing so will mean that running your first example is just three steps away:
 
 1. Go to the [releases](https://github.com/alexholmes/hiped2/releases) and download the most recent tarball.
 2. Extract the contents ot the tarball.
-
 ```bash
 $ tar -xzvf hip-<version>-package.tar.gz
 ```
@@ -47,13 +46,10 @@ Done! The tarball also includes the sources and JavaDocs.
 Here you're going to checkout the trunk and then use Maven to run a build.
 
 1. Checkout the code.
-
 ```bash
 $ git co git@github.com:alexholmes/hiped2.git
 ```
-
 2. Build the code and distribution tarball.
-
 ```bash
 $ cd hiped2
 $ mvn package
