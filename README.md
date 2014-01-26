@@ -47,9 +47,8 @@ Here you're going to checkout the trunk and then use Maven to run a build.
 
 1. Checkout the code.
 
-```bash
-$ git co git@github.com:alexholmes/hiped2.git
-```
+        $ git co git@github.com:alexholmes/hiped2.git
+
 2. Build the code and distribution tarball.
 
 ```bash
