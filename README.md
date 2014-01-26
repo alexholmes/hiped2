@@ -21,22 +21,43 @@ Doing so will mean that running your first example is just three steps away:
 2. Extract the contents ot the tarball, i.e. `tar -xzvf hip-<version>-package.tar.gz`
 3. Run the "hello world" example, which is
 
-```ruby
+```bash
 $ cd hip-<version>
-$
-```
-Click on the "releases" link
 
+# create two input files in HDFS
+$ hadoop fs -mkdir -p hip1/input
+$ echo "cat sat mat" | hadoop fs -put - hip1/input/1.txt
+$ echo "dog lay mat" | hadoop fs -put - hip1/input/2.txt
+
+# run the inverted index example
+$ ./hip hip.ch1.InvertedIndexJob --input hip1/input --output hip1/output
+
+# examine the results in HDFS
+$ hadoop fs -cat hip1/output/part*
+```
+
+Done! The tarball also includes the sources and JavaDocs.
 
 ### Building your own distribution
 
-To get started, simply:
+Here you're going to checkout the trunk and then use Maven to run a build.
 
-1. Download, and run `mvn package`.
-2. Use the generated JAR `target/hadoop-utils-<version>.jar` in your application.
-3. Understand the API's by reading the generated JavaDocs in `target/hadoop-utils-<version>-javadoc.jar`.
+1. Checkout the code.
 
-### To run the bundled utilities
+```bash
+$ git co git@github.com:alexholmes/hiped2.git
+```
 
-Look at file [CLI.md](https://github.com/alexholmes/hadoop-utils/blob/master/CLI.md) for more details.
+2. Build the code and distribution tarball.
 
+```bash
+$ cd hiped2
+$ mvn package
+```
+
+The JAR's and tarball will be under the `target` directory.
+
+## What's next?
+
+At this point check out the book for more examples and how you can execute them. Or if you find any issues then
+please post them here - click on "Issues".
