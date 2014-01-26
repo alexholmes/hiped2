@@ -17,7 +17,7 @@ Apache version 2.0 (for more details look at the [license](LICENSE)).
 The easiest way to start working with the examples is to download a tarball distribution of this project.
 Doing so will mean that running your first example is just three steps away:
 
-1. Click on "releases" and download the most recent tarball.
+1. Go to the [releases](https://github.com/alexholmes/hiped2/releases) and download the most recent tarball.
 2. Extract the contents ot the tarball, i.e. `tar -xzvf hip-<version>-package.tar.gz`
 3. Run the "hello world" example, which is
 
@@ -60,4 +60,4 @@ The JAR's and tarball will be under the `target` directory.
 ## What's next?
 
 At this point check out the book for more examples and how you can execute them. Or if you find any issues then
-please post them here - click on "Issues".
+please go to the [issues](https://github.com/alexholmes/hiped2/issues) and open a new issue.
