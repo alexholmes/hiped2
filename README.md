@@ -53,7 +53,7 @@ Here you're going to checkout the trunk and then use Maven to run a build.
 
 ```bash
 $ cd hiped2
-$ mvn package
+$ mvn clean validate package
 ```
 
 The JAR's and tarball will be under the `target` directory. Now you can follow the instructions in the

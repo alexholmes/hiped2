@@ -18,7 +18,35 @@
         <!-- Scripts -->
         <fileSet>
             <directory>src/main/bin</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/bin</outputDirectory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <fileMode>0777</fileMode>
+            <directoryMode>0777</directoryMode>
+        </fileSet>
+        <!-- Configuration files -->
+        <fileSet>
+            <directory>src/main/conf</directory>
+            <outputDirectory>/conf</outputDirectory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>
+        <!-- Test data -->
+        <fileSet>
+            <directory>test-data</directory>
+            <outputDirectory>/test-data</outputDirectory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>
+        <!-- Oozie data -->
+        <fileSet>
+            <directory>src/main/oozie</directory>
+            <outputDirectory>/oozie</outputDirectory>
             <includes>
                 <include>*</include>
             </includes>
@@ -42,9 +70,11 @@
                 <include>guava*.jar</include>
                 <include>guice*.jar</include>
                 <include>jopt*.jar</include>
+                <include>hbase*.jar</include>
+                <include>jopt*.jar</include>
+                <include>mysql*.jar</include>
                 <include>slf4j*.jar</include>
                 <include>snappy*.jar</include>
-                <include>jopt*.jar</include>
             </includes>
         </fileSet>
         <!-- Data -->

@@ -1,0 +1,231 @@
+Index: ../../opensource/camus/camus-schema-registry-avro/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/camus-schema-registry-avro/pom.xml	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/camus-schema-registry-avro/pom.xml	(revision )
+@@ -21,10 +21,19 @@
+       <groupId>org.apache.avro</groupId>
+       <artifactId>avro</artifactId>
+     </dependency>
++      <!--<dependency>-->
++      <!--<groupId>org.apache.hadoop</groupId>-->
++      <!--<artifactId>hadoop-core</artifactId>-->
++      <!--</dependency>-->
++
+-    <dependency>
+-      <groupId>org.apache.hadoop</groupId>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
+-      <artifactId>hadoop-core</artifactId>
++          <artifactId>hadoop-client</artifactId>
++      </dependency>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
++          <artifactId>hadoop-mapreduce-client-common</artifactId>
+-    </dependency>
++      </dependency>
+     <dependency>
+       <groupId>log4j</groupId>
+       <artifactId>log4j</artifactId>
+Index: ../../opensource/camus/camus-example/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/camus-example/pom.xml	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/camus-example/pom.xml	(revision )
+@@ -29,10 +29,19 @@
+       <groupId>org.apache.avro</groupId>
+       <artifactId>avro</artifactId>
+     </dependency>
++      <!--<dependency>-->
++      <!--<groupId>org.apache.hadoop</groupId>-->
++      <!--<artifactId>hadoop-core</artifactId>-->
++      <!--</dependency>-->
++
+-    <dependency>
+-      <groupId>org.apache.hadoop</groupId>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
+-      <artifactId>hadoop-core</artifactId>
++          <artifactId>hadoop-client</artifactId>
++      </dependency>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
++          <artifactId>hadoop-mapreduce-client-common</artifactId>
+-    </dependency>
++      </dependency>
+   </dependencies>
+ 
+   <build>
+Index: ../../opensource/camus/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/pom.xml	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/pom.xml	(revision )
+@@ -19,6 +19,10 @@
+ 
+ 	<properties>
+ 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++
++         <!-- aholmes -->
++        <hadoop1.version>0.20.205.0</hadoop1.version>
++        <hadoop2.version>2.3.0</hadoop2.version>
+ 	</properties>
+ 
+ 	<dependencyManagement>
+@@ -70,12 +74,27 @@
+ 				<artifactId>joda-time</artifactId>
+ 				<version>1.6</version>
+ 			</dependency>
++
++			<!--<dependency>-->
++				<!--<groupId>org.apache.hadoop</groupId>-->
++				<!--<artifactId>hadoop-core</artifactId>-->
++				<!--<version>1.0.3</version>-->
++			<!--</dependency>-->
++
++            <!-- aholmes-->
+-			<dependency>
+-				<groupId>org.apache.hadoop</groupId>
++            <dependency>
++                <groupId>org.apache.hadoop</groupId>
+-				<artifactId>hadoop-core</artifactId>
+-				<version>1.0.3</version>
++                <artifactId>hadoop-client</artifactId>
++                <version>${hadoop2.version}</version>
+-			</dependency>
++            </dependency>
++            <dependency>
++                <groupId>org.apache.hadoop</groupId>
++                <artifactId>hadoop-mapreduce-client-common</artifactId>
++                <version>${hadoop2.version}</version>
++            </dependency>
++
++
+-			<dependency>
++            <dependency>
+ 				<groupId>kafka</groupId>
+ 				<artifactId>kafka</artifactId>
+ 				<version>0.8-SNAPSHOT</version>
+Index: ../../opensource/camus/camus-schema-registry/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/camus-schema-registry/pom.xml	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/camus-schema-registry/pom.xml	(revision )
+@@ -21,10 +21,19 @@
+       <groupId>org.apache.avro</groupId>
+       <artifactId>avro</artifactId>
+     </dependency>
++      <!--<dependency>-->
++      <!--<groupId>org.apache.hadoop</groupId>-->
++      <!--<artifactId>hadoop-core</artifactId>-->
++      <!--</dependency>-->
++
+-    <dependency>
+-      <groupId>org.apache.hadoop</groupId>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
+-      <artifactId>hadoop-core</artifactId>
++          <artifactId>hadoop-client</artifactId>
++      </dependency>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
++          <artifactId>hadoop-mapreduce-client-common</artifactId>
+-    </dependency>
++      </dependency>
+     <dependency>
+       <groupId>log4j</groupId>
+       <artifactId>log4j</artifactId>
+Index: ../../opensource/camus/camus-etl-kafka/src/test/java/com/linkedin/camus/etl/kafka/mapred/EtlMultiOutputCommitterTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/camus-etl-kafka/src/test/java/com/linkedin/camus/etl/kafka/mapred/EtlMultiOutputCommitterTest.java	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/camus-etl-kafka/src/test/java/com/linkedin/camus/etl/kafka/mapred/EtlMultiOutputCommitterTest.java	(revision )
+@@ -10,6 +10,7 @@
+ import org.apache.hadoop.mapred.TaskAttemptID;
+ import org.apache.hadoop.mapreduce.JobContext;
+ import org.apache.hadoop.mapreduce.TaskAttemptContext;
++import org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl;
+ import org.junit.After;
+ import org.junit.Before;
+ import org.junit.Test;
+@@ -31,7 +32,7 @@
+     public void setup() throws IOException {
+         configuration = new Configuration();
+         configuration.set(EtlMultiOutputFormat.ETL_DEFAULT_PARTITIONER_CLASS, "com.linkedin.camus.etl.kafka.coders.DefaultPartitioner");
+-        taskAttemptContext = new TaskAttemptContext(configuration, new TaskAttemptID());
++        taskAttemptContext = new TaskAttemptContextImpl(configuration, new TaskAttemptID());
+         etlMultiOutputFormat = new EtlMultiOutputFormat();
+         committer = (EtlMultiOutputFormat.EtlMultiOutputCommitter) etlMultiOutputFormat.getOutputCommitter(taskAttemptContext);
+     }
+Index: ../../opensource/camus/camus-api/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/camus-api/pom.xml	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/camus-api/pom.xml	(revision )
+@@ -13,10 +13,19 @@
+   <packaging>jar</packaging>
+ 
+   <dependencies>
++    <!--<dependency>-->
++      <!--<groupId>org.apache.hadoop</groupId>-->
++      <!--<artifactId>hadoop-core</artifactId>-->
++    <!--</dependency>-->
++
+-    <dependency>
+-      <groupId>org.apache.hadoop</groupId>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
+-      <artifactId>hadoop-core</artifactId>
++          <artifactId>hadoop-client</artifactId>
++      </dependency>
++      <dependency>
++          <groupId>org.apache.hadoop</groupId>
++          <artifactId>hadoop-mapreduce-client-common</artifactId>
+-    </dependency>
++      </dependency>
+   </dependencies>
+ 
+ 
+Index: ../../opensource/camus/camus-etl-kafka/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../../opensource/camus/camus-etl-kafka/pom.xml	(revision 27aa6e5fc9d5bdb8ca0c1780c5b137be143050f9)
++++ ../../opensource/camus/camus-etl-kafka/pom.xml	(revision )
+@@ -28,10 +28,19 @@
+ 			<groupId>org.apache.avro</groupId>
+ 			<artifactId>avro-mapred</artifactId>
+ 		</dependency>
++        <!--<dependency>-->
++        <!--<groupId>org.apache.hadoop</groupId>-->
++        <!--<artifactId>hadoop-core</artifactId>-->
++        <!--</dependency>-->
++
+-		<dependency>
+-			<groupId>org.apache.hadoop</groupId>
++        <dependency>
++            <groupId>org.apache.hadoop</groupId>
+-			<artifactId>hadoop-core</artifactId>
++            <artifactId>hadoop-client</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.apache.hadoop</groupId>
++            <artifactId>hadoop-mapreduce-client-common</artifactId>
+-		</dependency>
++        </dependency>
+ 		<dependency>
+ 			<groupId>kafka</groupId>
+ 			<artifactId>kafka</artifactId>

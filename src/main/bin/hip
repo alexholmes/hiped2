@@ -2,8 +2,9 @@
 
 # Script to launch examples from the book "Hadoop in Practice".
 
-bin=`dirname "${HIP_BIN-$0}"`
-bin=`cd "$bin"; pwd`
+home=`dirname "${HIP_BIN-$0}"`
+home=`dirname "${home}"`
+home=`cd "$home"; pwd`
 
 function print_usage(){
   echo "Usage: $(basename $0) <class> ARGS"
@@ -20,16 +21,16 @@ CLASS=$1
 shift
 
 LIBJARS=""
-for file in `find ${bin}/lib -type f`; do
+for file in `find ${home}/lib -type f`; do
   LIBJARS=${LIBJARS},$file
 done
 
-HIP_JAR=${bin}/`ls -1 | grep "hip-[0-9\.]+\.jar"`
+HIP_JAR=${home}/`ls -1 | grep "hip-[0-9\.]+\.jar"`
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  HIP_JAR=${bin}/`find -E . -type f -regex '.*hip\-[0-9\.]+.jar'`
+  HIP_JAR=`find -E ${home} -type f -regex '.*hip\-[0-9\.]+.jar'`
 else
-  HIP_JAR=${bin}/`find . -type f -regex '.*hip\-[0-9\.]+.jar'`
+  HIP_JAR=`find ${home} -maxdepth 1 -type f -regex '.*hip\-[0-9\.]+.jar'`
 fi
 
 if [ ! -f ${HIP_JAR} ]; then

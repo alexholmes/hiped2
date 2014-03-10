@@ -1,0 +1,5 @@
+dee	kia	ali
+ali	dee	bob	joe
+joe	bob	ali
+kia	bob	dee
+bob	kia	ali	joe
