@@ -1,7 +1,7 @@
 package hip.ch3.kafka.camus;
 
 import com.linkedin.camus.schemaregistry.AvroMemorySchemaRegistry;
-import hip.ch5.avro.gen.Stock;
+import hip.ch4.avro.gen.Stock;
 
 /**
  */

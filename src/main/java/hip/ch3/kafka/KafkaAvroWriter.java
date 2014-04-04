@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import hip.ch5.avro.AvroStockFileWrite;
-import hip.ch5.avro.gen.Stock;
+import hip.ch4.avro.AvroStockUtils;
+import hip.ch4.avro.gen.Stock;
 import hip.util.Cli;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
@@ -15,7 +15,6 @@ import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
-import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.util.Tool;
@@ -67,9 +66,7 @@ public class KafkaAvroWriter extends Configured implements Tool {
 
     Producer<Integer, byte[]> producer = new Producer<Integer, byte[]>(config);
 
-    for (String line : FileUtils.readLines(inputFile)) {
-      Stock stock = AvroStockFileWrite.createStock(line);
-
+    for (Stock stock : AvroStockUtils.fromCsvFile(inputFile)) {
       KeyedMessage<Integer, byte[]> msg = new KeyedMessage<Integer, byte[]>(kTopic, toBytes(stock));
       System.out.println("Sending " + msg + " to kafka @ topic " + kTopic);
       producer.send(msg);

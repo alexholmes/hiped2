@@ -1,6 +1,6 @@
 package hip.ch3.hbase;
 
-import hip.ch5.avro.gen.Stock;
+import hip.ch4.avro.gen.Stock;
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -10,7 +10,6 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
-import org.apache.hadoop.hbase.mapreduce.MutationSerialization;
 import org.apache.hadoop.hbase.mapreduce.ResultSerialization;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.util.Tool;

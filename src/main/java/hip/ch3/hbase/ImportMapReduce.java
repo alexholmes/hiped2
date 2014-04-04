@@ -1,6 +1,6 @@
 package hip.ch3.hbase;
 
-import hip.ch5.avro.gen.Stock;
+import hip.ch4.avro.gen.Stock;
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
 import org.apache.hadoop.conf.Configuration;

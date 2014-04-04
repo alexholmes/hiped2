@@ -250,6 +250,66 @@
                             <pomFile>${basedir}/lib/camus-api-0.1.0-SNAPSHOT.xml</pomFile>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>install-elephantbird-core</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.twitter.elephantbird</groupId>
+                            <artifactId>elephant-bird-core</artifactId>
+                            <version>4.5-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/lib/elephant-bird-core-4.5-SNAPSHOT.jar</file>
+                            <pomFile>${basedir}/lib/elephant-bird-core-4.5-SNAPSHOT.xml</pomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-elephantbird-hadoopcompat</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.twitter.elephantbird</groupId>
+                            <artifactId>elephant-bird-hadoop-compat</artifactId>
+                            <version>4.5-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/lib/elephant-bird-hadoop-compat-4.5-SNAPSHOT.jar</file>
+                            <pomFile>${basedir}/lib/elephant-bird-hadoop-compat-4.5-SNAPSHOT.xml</pomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-elephantbird-pig</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.twitter.elephantbird</groupId>
+                            <artifactId>elephant-bird-pig</artifactId>
+                            <version>4.5-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/lib/elephant-bird-pig-4.5-SNAPSHOT.jar</file>
+                            <pomFile>${basedir}/lib/elephant-bird-pig-4.5-SNAPSHOT.xml</pomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-elephantbird-hive</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.twitter.elephantbird</groupId>
+                            <artifactId>elephant-bird-hive</artifactId>
+                            <version>4.5-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/lib/elephant-bird-hive-4.5-SNAPSHOT.jar</file>
+                            <pomFile>${basedir}/lib/elephant-bird-hive-4.5-SNAPSHOT.xml</pomFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -445,6 +505,14 @@
             <artifactId>avro-mapred</artifactId>
             <version>1.7.4</version>
             <scope>compile</scope>
+            <classifier>hadoop2</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-tools</artifactId>
+            <version>1.7.4</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Kafka -->
@@ -468,6 +536,8 @@
         </dependency>
 
         <!-- Elephant Bird -->
+
+        <!-- 4.4 doesn't have protobuf 4.5 support
         <dependency>
             <groupId>com.twitter.elephantbird</groupId>
             <artifactId>elephant-bird-core</artifactId>
@@ -479,6 +549,29 @@
                     <artifactId>protobuf-java</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        -->
+
+        <dependency>
+            <groupId>com.twitter.elephantbird</groupId>
+            <artifactId>elephant-bird-core</artifactId>
+            <version>4.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter.elephantbird</groupId>
+            <artifactId>elephant-bird-hadoop-compat</artifactId>
+            <version>4.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter.elephantbird</groupId>
+            <artifactId>elephant-bird-pig</artifactId>
+            <version>4.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter.elephantbird</groupId>
+            <artifactId>elephant-bird-hive</artifactId>
+            <version>4.5-SNAPSHOT</version>
         </dependency>
 
         <!-- Compression -->
@@ -494,6 +587,12 @@
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
         </dependency>
 
         <!-- Logging -->

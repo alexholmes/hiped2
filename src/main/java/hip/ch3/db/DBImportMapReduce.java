@@ -1,8 +1,8 @@
 package hip.ch3.db;
 
 
-import hip.ch5.StockPriceWritable;
-import hip.ch5.avro.gen.*;
+import hip.ch4.StockPriceWritable;
+import hip.ch4.avro.gen.*;
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
 import org.apache.avro.mapred.AvroJob;

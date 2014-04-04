@@ -17,13 +17,22 @@ if [ "$#" == "0" ]; then
     exit 1
 fi
 
+nolib=false
+
+if [ "$1" == "--nolib" ]; then
+  nolib=true
+  shift
+fi
+
 CLASS=$1
 shift
 
 LIBJARS=""
-for file in `find ${home}/lib -type f`; do
+for file in `find ${home}/lib -type f | grep -v avro-tools`; do
   LIBJARS=${LIBJARS},$file
 done
+
+LIBJARS=${home}/lib/jopt-simple-4.5.jar,${LIBJARS}
 
 HIP_JAR=${home}/`ls -1 | grep "hip-[0-9\.]+\.jar"`
 
@@ -40,4 +49,8 @@ fi
 
 export HADOOP_CLASSPATH=`echo ${LIBJARS} | sed s/,/:/g`
 
-hadoop jar ${HIP_JAR} ${CLASS} -libjars ${LIBJARS} "$@"
+if [ "$nolib" = true ] ; then
+  hadoop jar ${HIP_JAR} ${CLASS} "$@"
+else
+  hadoop jar ${HIP_JAR} ${CLASS} -libjars ${LIBJARS} "$@"
+fi

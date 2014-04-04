@@ -1,13 +1,12 @@
 package hip.ch3.hbase;
 
-import hip.ch5.avro.AvroStockFileWrite;
-import hip.ch5.avro.gen.Stock;
+import hip.ch4.avro.AvroStockUtils;
+import hip.ch4.avro.gen.Stock;
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
-import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -81,8 +80,7 @@ public class HBaseWriter extends Configured implements Tool {
     BinaryEncoder encoder =
         EncoderFactory.get().directBinaryEncoder(bao, null);
 
-    for (String line : FileUtils.readLines(inputFile)) {
-      Stock stock = AvroStockFileWrite.createStock(line);
+    for (Stock stock: AvroStockUtils.fromCsvFile(inputFile)) {
       writer.write(stock, encoder);
       encoder.flush();
 

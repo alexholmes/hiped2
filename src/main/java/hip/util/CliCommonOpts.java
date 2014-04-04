@@ -1,8 +1,8 @@
 package hip.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.velocity.util.StringUtils;
 
 import java.io.IOException;
 
@@ -131,12 +131,26 @@ public class CliCommonOpts {
     }
   }
 
-  public enum IODirOpts implements Cli.ArgGetter {
-    INPUT(ArgBuilder.builder().hasArgument(true).required(true).description("Input directory")),
-    OUTPUT(ArgBuilder.builder().hasArgument(true).required(true).description("Output directory"));
+  public enum MrIoOpts implements Cli.ArgGetter {
+    INPUT(ArgBuilder.builder().hasArgument(true).required(true).description("Input file or directory")),
+    OUTPUT(ArgBuilder.builder().hasArgument(true).required(true).description("HDFS output directory"));
     private final Cli.ArgInfo argInfo;
 
-    IODirOpts(final ArgBuilder builder) {
+    MrIoOpts(final ArgBuilder builder) {
+      this.argInfo = builder.setArgName(name()).build();
+    }
+
+    @Override
+    public Cli.ArgInfo getArgInfo() {
+      return argInfo;
+    }
+  }
+
+  public enum MrIOpts implements Cli.ArgGetter {
+    INPUT(ArgBuilder.builder().hasArgument(true).required(true).description("Input file or directory"));
+    private final Cli.ArgInfo argInfo;
+
+    MrIOpts(final ArgBuilder builder) {
       this.argInfo = builder.setArgName(name()).build();
     }
 

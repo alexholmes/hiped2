@@ -1,6 +1,6 @@
 package hip.ch3.db;
 
-import hip.ch5.StockPriceWritable;
+import hip.ch4.StockPriceWritable;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapred.lib.db.DBWritable;
 

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Script which generates a classpath that can be manually exported
+
+home=`dirname "${HIP_BIN-$0}"`
+home=`dirname "${home}"`
+home=`cd "$home"; pwd`
+
+HADOOP_CLASSPATH=""
+for file in `find ${home}/lib -type f`; do
+  HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:$file
+done
+
+HIP_JAR=${home}/`ls -1 | grep "hip-[0-9\.]+\.jar"`
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  HIP_JAR=`find -E ${home} -type f -regex '.*hip\-[0-9\.]+.jar'`
+else
+  HIP_JAR=`find ${home} -maxdepth 1 -type f -regex '.*hip\-[0-9\.]+.jar'`
+fi
+
+if [ ! -f ${HIP_JAR} ]; then
+  echo "Unable to locate the HiP JAR - only OSX and GNU Linux systems are supported."
+  exit 2
+fi
+
+echo "To prep your environment, run the following command:"
+echo
+echo "export HADOOP_CLASSPATH=$HIP_JAR:$HADOOP_CLASSPATH"

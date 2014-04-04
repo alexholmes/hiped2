@@ -52,6 +52,23 @@
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
+        <!-- Schema's -->
+        <fileSet>
+            <directory>src/main/java/hip/ch5/avro/</directory>
+            <outputDirectory>/schema</outputDirectory>
+            <includes>
+                <include>*.avsc</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/java/hip/ch5/proto/</directory>
+            <outputDirectory>/schema</outputDirectory>
+            <includes>
+                <include>*.proto</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>
         <!-- Our JAR's -->
         <fileSet>
             <directory>target</directory>
@@ -65,14 +82,18 @@
             <directory>target/lib</directory>
             <outputDirectory>/lib</outputDirectory>
             <includes>
-                <include>avro*.jar</include>
+                <include>avro-1.7.4*.jar</include>
+                <include>avro-mapred-1.7.4*.jar</include>
+                <include>avro-tools*.jar</include>
                 <include>commons*.jar</include>
+                <include>elephant-bird*.jar</include>
                 <include>guava*.jar</include>
                 <include>guice*.jar</include>
-                <include>jopt*.jar</include>
                 <include>hbase*.jar</include>
                 <include>jopt*.jar</include>
+                <include>libthrift*.jar</include>
                 <include>mysql*.jar</include>
+                <include>opencsv*.jar</include>
                 <include>slf4j*.jar</include>
                 <include>snappy*.jar</include>
             </includes>

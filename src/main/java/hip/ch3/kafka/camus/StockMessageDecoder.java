@@ -2,7 +2,7 @@ package hip.ch3.kafka.camus;
 
 import com.linkedin.camus.coders.CamusWrapper;
 import com.linkedin.camus.coders.MessageDecoder;
-import hip.ch5.avro.gen.Stock;
+import hip.ch4.avro.gen.Stock;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.io.DatumReader;
