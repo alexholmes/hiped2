@@ -2,13 +2,13 @@ package hip.ch4.avro;
 
 import hip.ch4.avro.gen.Stock;
 import hip.ch4.avro.gen.StockAvg;
-
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
 import org.apache.avro.mapred.AvroInputFormat;
 import org.apache.avro.mapred.AvroJob;
 import org.apache.avro.mapred.AvroOutputFormat;
 import org.apache.avro.mapred.AvroWrapper;
+import org.apache.commons.math.stat.descriptive.moment.Mean;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -83,7 +83,7 @@ public class AvroMixedMapReduce extends Configured implements Tool {
     return JobClient.runJob(job).isSuccessful() ? 0 : 1;
   }
 
-  public static class Map
+  public static class Map extends MapReduceBase
       implements
       Mapper<AvroWrapper<Stock>, NullWritable, Text, DoubleWritable> {
 
@@ -94,15 +94,9 @@ public class AvroMixedMapReduce extends Configured implements Tool {
       output.collect(new Text(key.datum().getSymbol().toString()),
           new DoubleWritable(key.datum().getOpen()));
     }
-
-    public void close() throws IOException {
-    }
-
-    public void configure(JobConf job) {
-    }
   }
 
-  public static class Reduce
+  public static class Reduce extends MapReduceBase
       implements Reducer<Text, DoubleWritable, AvroWrapper<StockAvg>,
       NullWritable> {
 
@@ -111,23 +105,16 @@ public class AvroMixedMapReduce extends Configured implements Tool {
                        OutputCollector<AvroWrapper<StockAvg>,
                            NullWritable> output,
                        Reporter reporter) throws IOException {
-      double total = 0.0;
-      double count = 0;
+
+      Mean mean = new Mean();
       while (values.hasNext()) {
-        total += values.next().get();
-        count++;
+        mean.increment(values.next().get());
       }
       StockAvg avg = new StockAvg();
       avg.setSymbol(key.toString());
-      avg.setAvg(total / count);
+      avg.setAvg(mean.getResult());
       output.collect(new AvroWrapper<StockAvg>(avg),
           NullWritable.get());
-    }
-
-    public void close() throws IOException {
-    }
-
-    public void configure(JobConf job) {
     }
   }
 }

@@ -1,4 +1,4 @@
-package hip.ch4.xml;
+package hip.ch5.sort.secondary;
 
 
 import hip.util.Cli;
@@ -8,6 +8,7 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
@@ -17,41 +18,7 @@ import org.apache.hadoop.util.ToolRunner;
 
 import java.io.IOException;
 
-public final class XmlMapReduceWriter extends Configured implements Tool {
-
-  public static class Reduce
-      extends Reducer<Text, Text, Text, Text> {
-
-    @Override
-    protected void setup(
-        Context context)
-        throws IOException, InterruptedException {
-      context.write(new Text("<configuration>"), null);
-    }
-
-    @Override
-    protected void cleanup(
-        Context context)
-        throws IOException, InterruptedException {
-      context.write(new Text("</configuration>"), null);
-    }
-
-    private Text outputKey = new Text();
-    public void reduce(Text key, Iterable<Text> values,
-                       Context context)
-        throws IOException, InterruptedException {
-      for (Text value : values) {
-        outputKey.set(constructPropertyXml(key, value));
-        context.write(outputKey, null);
-      }
-    }
-
-    public static String constructPropertyXml(Text name, Text value) {
-      return String.format(
-          "<property><name>%s</name><value>%s</value></property>",          name, value);
-    }
-  }
-
+public final class SortMapReduce extends Configured implements Tool {
   /**
    * Main entry point for the example.
    *
@@ -59,7 +26,7 @@ public final class XmlMapReduceWriter extends Configured implements Tool {
    * @throws Exception when something goes wrong
    */
   public static void main(final String[] args) throws Exception {
-    int res = ToolRunner.run(new Configuration(), new XmlMapReduceWriter(), args);
+    int res = ToolRunner.run(new Configuration(), new SortMapReduce(), args);
     System.exit(res);
   }
 
@@ -72,7 +39,6 @@ public final class XmlMapReduceWriter extends Configured implements Tool {
    */
   public int run(final String[] args) throws Exception {
 
-
     Cli cli = Cli.builder().setArgs(args).addOptions(CliCommonOpts.MrIoOpts.values()).build();
     int result = cli.runCmd();
 
@@ -84,14 +50,23 @@ public final class XmlMapReduceWriter extends Configured implements Tool {
     Path outputPath = new Path(cli.getArgValueAsString(CliCommonOpts.MrIoOpts.OUTPUT));
 
     Configuration conf = super.getConf();
-
     Job job = new Job(conf);
-    job.setJarByClass(XmlMapReduceWriter.class);
+    job.setJarByClass(SortMapReduce.class);
+
+    job.setMapperClass(Map.class);
     job.setReducerClass(Reduce.class);
+
     job.setInputFormatClass(KeyValueTextInputFormat.class);
 
-    job.setMapOutputKeyClass(Text.class);
+    job.setMapOutputKeyClass(Person.class);
     job.setMapOutputValueClass(Text.class);
+
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    job.setPartitionerClass(PersonNamePartitioner.class);
+    job.setSortComparatorClass(PersonComparator.class);
+    job.setGroupingComparatorClass(PersonNameComparator.class);
 
     FileInputFormat.setInputPaths(job, inputPath);
     FileOutputFormat.setOutputPath(job, outputPath);
@@ -100,5 +75,34 @@ public final class XmlMapReduceWriter extends Configured implements Tool {
       return 0;
     }
     return 1;
+  }
+
+  public static class Map
+      extends Mapper<Text, Text, Person, Text> {
+
+    private Person outputKey = new Person();
+
+    @Override
+    protected void map(Text lastName, Text firstName, Context context)
+        throws IOException, InterruptedException {
+      outputKey.set(lastName.toString(), firstName.toString());
+      context.write(outputKey, firstName);
+    }
+  }
+
+  public static class Reduce
+      extends Reducer<Person, Text, Text, Text> {
+
+    Text lastName = new Text();
+
+    @Override
+    public void reduce(Person key, Iterable<Text> values,
+                       Context context)
+        throws IOException, InterruptedException {
+      lastName.set(key.getLastName());
+      for (Text firstName : values) {
+        context.write(lastName, firstName);
+      }
+    }
   }
 }

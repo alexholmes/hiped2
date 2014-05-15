@@ -1,7 +1,7 @@
 {
   "name": "Stock",
   "type": "record",
-  "namespace": "hip.ch5.avro.gen",
+  "namespace": "hip.ch4.avro.gen",
   "fields": [
       {"name": "symbol",    "type": "string"},
       {"name": "date",      "type": "string"},

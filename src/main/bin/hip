@@ -47,10 +47,10 @@ if [ ! -f ${HIP_JAR} ]; then
   exit 2
 fi
 
-export HADOOP_CLASSPATH=`echo ${LIBJARS} | sed s/,/:/g`
+export HADOOP_CLASSPATH=${HIP_JAR}:`echo ${LIBJARS} | sed s/,/:/g`
 
 if [ "$nolib" = true ] ; then
-  hadoop jar ${HIP_JAR} ${CLASS} "$@"
+  hadoop ${CLASS} "$@"
 else
-  hadoop jar ${HIP_JAR} ${CLASS} -libjars ${LIBJARS} "$@"
+  hadoop ${CLASS} -libjars ${LIBJARS} "$@"
 fi

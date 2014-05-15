@@ -117,9 +117,9 @@ public final class InvertedIndexJob extends Configured implements Tool {
     public void reduce(Text key, Iterable<Text> values, Context context)
         throws IOException, InterruptedException {
 
-      HashSet<Text> uniqueDocIds = new HashSet<Text>();
+      HashSet<String> uniqueDocIds = new HashSet<String>();
       for (Text docId : values) {
-        uniqueDocIds.add(new Text(docId));
+        uniqueDocIds.add(docId.toString());
       }
       docIds.set(new Text(StringUtils.join(uniqueDocIds, ",")));
       context.write(key, docIds);

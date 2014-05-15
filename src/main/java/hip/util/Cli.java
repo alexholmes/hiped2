@@ -70,8 +70,24 @@ public final class Cli {
     return (String) options.valueOf(opt.getArgName());
   }
 
+  public Integer getArgValueAsInt(ArgInfo opt) {
+    String s  = getArgValueAsString(opt);
+    if (s == null) {
+      return null;
+    }
+    return Integer.valueOf(s);
+  }
+
   public String getArgValueAsString(ArgGetter opt) {
     return (String) options.valueOf(opt.getArgInfo().getArgName());
+  }
+
+  public Integer getArgValueAsInt(ArgGetter opt) {
+    String s  = getArgValueAsString(opt);
+    if (s == null) {
+      return null;
+    }
+    return Integer.valueOf(s);
   }
 
   public boolean doesArgExist(ArgInfo opt) {

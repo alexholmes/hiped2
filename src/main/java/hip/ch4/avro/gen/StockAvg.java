@@ -6,7 +6,7 @@
 package hip.ch4.avro.gen;
 @SuppressWarnings("all")
 public class StockAvg extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = org.apache.avro.Schema.parse("{\"type\":\"record\",\"name\":\"StockAvg\",\"namespace\":\"hip.ch5.avro.gen\",\"fields\":[{\"name\":\"symbol\",\"type\":\"string\"},{\"name\":\"avg\",\"type\":\"double\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = org.apache.avro.Schema.parse("{\"type\":\"record\",\"name\":\"StockAvg\",\"namespace\":\"hip.ch4.avro.gen\",\"fields\":[{\"name\":\"symbol\",\"type\":\"string\"},{\"name\":\"avg\",\"type\":\"double\"}]}");
   @Deprecated public CharSequence symbol;
   @Deprecated public double avg;
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }

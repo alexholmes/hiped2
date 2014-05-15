@@ -94,6 +94,7 @@
                 <include>libthrift*.jar</include>
                 <include>mysql*.jar</include>
                 <include>opencsv*.jar</include>
+                <include>parquet*.jar</include>
                 <include>slf4j*.jar</include>
                 <include>snappy*.jar</include>
             </includes>

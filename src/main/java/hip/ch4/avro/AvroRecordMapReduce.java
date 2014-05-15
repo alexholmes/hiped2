@@ -8,6 +8,7 @@ import hip.util.CliCommonOpts;
 import org.apache.avro.Schema;
 import org.apache.avro.mapred.*;
 import org.apache.avro.util.Utf8;
+import org.apache.commons.math.stat.descriptive.moment.Mean;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -88,15 +89,13 @@ public class AvroRecordMapReduce extends Configured implements Tool {
                        AvroCollector<StockAvg> collector,
                        Reporter reporter) throws IOException {
 
-      double total = 0.0;
-      double count = 0;
+      Mean mean = new Mean();
       for (Stock stock : stocks) {
-        total += stock.getOpen();
-        count++;
+        mean.increment(stock.getOpen());
       }
       StockAvg avg = new StockAvg();
       avg.setSymbol(symbol.toString());
-      avg.setAvg(total / count);
+      avg.setAvg(mean.getResult());
 
       collector.collect(avg);
     }

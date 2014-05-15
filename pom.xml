@@ -422,6 +422,12 @@
             <version>2.2.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-datajoin</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
         <!-- HBase -->
         <dependency>
             <groupId>org.apache.hbase</groupId>
@@ -521,6 +527,44 @@
             <artifactId>kafka</artifactId>
             <version>0.8-SNAPSHOT</version>
         </dependency>
+
+        <!-- Parquet -->
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-common</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-encoding</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-column</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-hadoop</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-avro</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-tools</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-hive-bundle</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
 
         <!-- Camus -->
         <dependency>

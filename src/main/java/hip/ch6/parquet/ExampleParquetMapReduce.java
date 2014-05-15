@@ -1,13 +1,7 @@
-package hip.ch4.avro;
+package hip.ch6.parquet;
 
-import hip.ch4.avro.gen.Stock;
-import hip.ch4.avro.gen.StockAvg;
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
-import org.apache.avro.Schema;
-import org.apache.avro.mapred.AvroKey;
-import org.apache.avro.mapred.AvroValue;
-import org.apache.avro.mapreduce.*;
 import org.apache.commons.math.stat.descriptive.moment.Mean;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -17,14 +11,21 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import parquet.example.data.Group;
+import parquet.example.data.simple.SimpleGroupFactory;
+import parquet.hadoop.example.ExampleInputFormat;
+import parquet.hadoop.example.ExampleOutputFormat;
+import parquet.hadoop.example.GroupWriteSupport;
+import parquet.hadoop.util.ContextUtil;
+import parquet.schema.MessageTypeParser;
 
 import java.io.IOException;
 
-public class AvroKeyValueMapReduce extends Configured implements Tool {
+public class ExampleParquetMapReduce extends Configured implements Tool {
 
   /**
    * Main entry point for the example.
@@ -33,9 +34,14 @@ public class AvroKeyValueMapReduce extends Configured implements Tool {
    * @throws Exception when something goes wrong
    */
   public static void main(final String[] args) throws Exception {
-    int res = ToolRunner.run(new Configuration(), new AvroKeyValueMapReduce(), args);
+    int res = ToolRunner.run(new Configuration(), new ExampleParquetMapReduce(), args);
     System.exit(res);
   }
+
+  private final static String writeSchema = "message stockavg {\n" +
+      "required binary symbol;\n" +
+      "required double avg;\n" +
+      "}";
 
   /**
    * The MapReduce driver - setup and launch the job.
@@ -59,12 +65,10 @@ public class AvroKeyValueMapReduce extends Configured implements Tool {
     Configuration conf = super.getConf();
 
     Job job = new Job(conf);
-    job.setJarByClass(AvroKeyValueMapReduce.class);
+    job.setJarByClass(ExampleParquetMapReduce.class);
 
+    job.setInputFormatClass(ExampleInputFormat.class);
     FileInputFormat.setInputPaths(job, inputPath);
-    job.setInputFormatClass(AvroKeyValueInputFormat.class);
-    AvroJob.setInputKeySchema(job, Schema.create(Schema.Type.STRING));
-    AvroJob.setInputValueSchema(job, Stock.SCHEMA$);
 
     job.setMapperClass(Map.class);
     job.setReducerClass(Reduce.class);
@@ -72,40 +76,45 @@ public class AvroKeyValueMapReduce extends Configured implements Tool {
     job.setMapOutputKeyClass(Text.class);
     job.setMapOutputValueClass(DoubleWritable.class);
 
-    job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(AvroValue.class);
-//    AvroJob.setOutputKeySchema(job, Schema.create(Schema.Type.STRING));
-    job.setOutputFormatClass(AvroKeyValueOutputFormat.class);
-    AvroJob.setOutputValueSchema(job, StockAvg.SCHEMA$);
-
+    job.setOutputFormatClass(ExampleOutputFormat.class);
     FileOutputFormat.setOutputPath(job, outputPath);
+    ExampleOutputFormat.setSchema(
+        job,
+        MessageTypeParser.parseMessageType(writeSchema));
 
     return job.waitForCompletion(true) ? 0 : 1;
   }
 
-  public static class Map extends Mapper<AvroKey<CharSequence>, AvroValue<Stock>, Text, DoubleWritable> {
+  public static class Map extends Mapper<Void, Group, Text, DoubleWritable> {
 
     @Override
-    public void map(AvroKey<CharSequence> key,
-                    AvroValue<Stock> value,
+    public void map(Void key,
+                    Group value,
                     Context context) throws IOException, InterruptedException {
-      context.write(new Text(key.toString()),
-          new DoubleWritable(value.datum().getOpen()));
+      context.write(new Text(value.getString("symbol", 0)),
+          new DoubleWritable(Double.valueOf(value.getValueToString(2, 0))));
     }
   }
 
-  public static class Reduce extends Reducer<Text, DoubleWritable, Text, AvroValue<StockAvg>> {
+  public static class Reduce extends Reducer<Text, DoubleWritable, Void, Group> {
+
+    private SimpleGroupFactory factory;
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+      factory = new SimpleGroupFactory(GroupWriteSupport.getSchema(ContextUtil.getConfiguration(context)));
+    }
 
     @Override
     protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
       Mean mean = new Mean();
-      for (DoubleWritable val: values) {
+      for (DoubleWritable val : values) {
         mean.increment(val.get());
       }
-      StockAvg avg = new StockAvg();
-      avg.setSymbol(key.toString());
-      avg.setAvg(mean.getResult());
-      context.write(key, new AvroValue<StockAvg>(avg));
+      Group group = factory.newGroup()
+          .append("symbol", key.toString())
+          .append("avg", mean.getResult());
+      context.write(null, group);
     }
   }
 }
