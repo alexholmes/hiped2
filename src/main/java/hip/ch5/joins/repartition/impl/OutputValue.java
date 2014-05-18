@@ -25,13 +25,12 @@ import org.apache.hadoop.io.WritableUtils;
 import org.apache.hadoop.mapred.JobConf;
 
 /**
- * This abstract class serves as the base class for the values that 
- * flow from the mappers to the reducers in a data join job. 
+ * This abstract class serves as the base class for the values that
+ * flow from the mappers to the reducers in a data join job.
  * Typically, in such a job, the mappers will compute the source
- * tag of an input record based on its attributes or based on the 
+ * tag of an input record based on its attributes or based on the
  * file name of the input file. This tag will be used by the reducers
  * to re-group the values of a given key according to their source tags.
- * 
  */
 public abstract class OutputValue implements Writable {
   protected BooleanWritable smaller;
@@ -49,7 +48,7 @@ public abstract class OutputValue implements Writable {
   }
 
   public abstract Writable getData();
-  
+
   public OutputValue clone(JobConf job) {
     return WritableUtils.clone(this, job);
   }

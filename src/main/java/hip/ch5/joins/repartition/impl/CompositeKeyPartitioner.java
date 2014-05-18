@@ -6,11 +6,11 @@ import org.apache.hadoop.mapred.Partitioner;
 public class CompositeKeyPartitioner implements
     Partitioner<CompositeKey, OutputValue> {
 
-	@Override
-	public int getPartition(CompositeKey key, OutputValue value,
-			int numPartitions) {
-		return Math.abs(key.getKey().hashCode() * 127) % numPartitions;
-	}
+  @Override
+  public int getPartition(CompositeKey key, OutputValue value,
+                          int numPartitions) {
+    return Math.abs(key.getKey().hashCode() * 127) % numPartitions;
+  }
 
   @Override
   public void configure(JobConf job) {

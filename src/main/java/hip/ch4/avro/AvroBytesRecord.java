@@ -12,7 +12,7 @@ public class AvroBytesRecord {
 
   public static final String BYTES_FIELD = "b";
   private static final String SCHEMA_JSON =
-          "{\"type\": \"record\", \"name\": \"SmallFilesTest\", "
+          "{\"type\": \"record\", \"name\": \"Bytes\", "
           + "\"fields\": ["
           + "{\"name\":\"" + BYTES_FIELD
           + "\", \"type\":\"bytes\"}]}";

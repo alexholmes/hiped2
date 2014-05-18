@@ -56,10 +56,10 @@ public final class TotalSortMapReduce extends Configured implements Tool {
 
 
     InputSampler.Sampler<Text, Text> sampler =
-        new InputSampler.RandomSampler<Text,Text>
+        new InputSampler.RandomSampler<Text, Text>
             (0.1,
-             10000,
-             10);
+                10000,
+                10);
 
     Configuration conf = super.getConf();
 

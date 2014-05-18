@@ -12,9 +12,9 @@ public class SampleReduce extends OptimizedDataJoinReducerBase {
 
   @Override
   protected OutputValue combine(String key,
-                                             OutputValue smallValue,
-                                             OutputValue largeValue) {
-    if(smallValue == null || largeValue == null) {
+                                OutputValue smallValue,
+                                OutputValue largeValue) {
+    if (smallValue == null || largeValue == null) {
       return null;
     }
     Object[] values = {

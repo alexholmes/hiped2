@@ -51,7 +51,7 @@ public abstract class OptimizedDataJoinMapperBase
     this.job = job;
     this.inputFile = job.get("map.input.file");
     this.inputTag = generateInputTag(this.inputFile);
-    if(isInputSmaller(this.inputFile)) {
+    if (isInputSmaller(this.inputFile)) {
       smaller = new BooleanWritable(true);
       outputKey.setOrder(0);
     } else {
@@ -90,7 +90,6 @@ public abstract class OptimizedDataJoinMapperBase
                                         OutputValue aRecord);
 
   /**
-   *
    * @param inputFile
    * @return true if the data from the supplied input file is smaller
    * than data from the other input file.

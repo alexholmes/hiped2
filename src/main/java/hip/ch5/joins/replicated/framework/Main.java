@@ -26,9 +26,9 @@ public class Main {
 
     FileStatus smallFilePathStatus = fs.getFileStatus(smallFilePath);
 
-    if(smallFilePathStatus.isDir()) {
-      for(FileStatus f: fs.listStatus(smallFilePath)) {
-        if(f.getPath().getName().startsWith("part")) {
+    if (smallFilePathStatus.isDir()) {
+      for (FileStatus f : fs.listStatus(smallFilePath)) {
+        if (f.getPath().getName().startsWith("part")) {
           DistributedCache.addCacheFile(f.getPath().toUri(), conf);
         }
       }

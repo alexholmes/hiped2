@@ -34,8 +34,8 @@ public class GenericReplicatedJoin
    * @param key   the key emitted by the {@link org.apache.hadoop.mapreduce.InputFormat}
    * @param value the key emitted by the {@link org.apache.hadoop.mapreduce.InputFormat}
    * @return a Pair object, where the key is a Text object containing
-   *         the key for joining purposes, and the value contains data which
-   *         will be used when creating the composite output key
+   * the key for joining purposes, and the value contains data which
+   * will be used when creating the composite output key
    */
   public Pair readFromInputFormat(Object key, Object value) {
     return new Pair<String, String>(key.toString(), value.toString());
@@ -53,7 +53,7 @@ public class GenericReplicatedJoin
    * with whitespace.
    *
    * @return a reader which can unmarshall data from the Distributed
-   *         Cache
+   * Cache
    */
   public DistributedCacheFileReader getDistributedCacheReader() {
     return new TextDistributedCacheFileReader();
@@ -75,8 +75,8 @@ public class GenericReplicatedJoin
    * @param inputSplitPair a record from the input split
    * @param distCachePair  a record from the Distributed Cache
    * @return a composite output value which is compatible with the
-   *         expected value type for the {@link org.apache.hadoop.mapreduce.OutputFormat}
-   *         used for this job
+   * expected value type for the {@link org.apache.hadoop.mapreduce.OutputFormat}
+   * used for this job
    */
   public Pair join(Pair inputSplitPair, Pair distCachePair) {
     StringBuilder sb = new StringBuilder();
@@ -111,7 +111,7 @@ public class GenericReplicatedJoin
       }
     }
 
-    if(context.getInputSplit() instanceof FileSplit) {
+    if (context.getInputSplit() instanceof FileSplit) {
       FileSplit split = (FileSplit) context.getInputSplit();
 
       long inputSplitSize = split.getLength();

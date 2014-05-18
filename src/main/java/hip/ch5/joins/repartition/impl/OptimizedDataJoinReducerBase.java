@@ -177,8 +177,8 @@ public abstract class OptimizedDataJoinReducerBase
    * @return combined value derived from values of the sources
    */
   protected abstract OutputValue combine(String key,
-                                                      OutputValue smallValue,
-                                                      OutputValue largeValue);
+                                         OutputValue smallValue,
+                                         OutputValue largeValue);
 
   public void map(Object arg0, Object arg1, OutputCollector arg2,
                   Reporter arg3) throws IOException {

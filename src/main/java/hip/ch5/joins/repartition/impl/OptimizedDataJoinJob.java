@@ -29,10 +29,9 @@ import java.io.IOException;
 
 /**
  * This class implements the main function for creating a map/reduce
- * job to join data of different sources. To create sucn a job, the 
+ * job to join data of different sources. To create sucn a job, the
  * user must implement a mapper class that extends DataJoinMapperBase class,
- * and a reducer class that extends DataJoinReducerBase. 
- * 
+ * and a reducer class that extends DataJoinReducerBase.
  */
 public class OptimizedDataJoinJob {
 
@@ -113,7 +112,7 @@ public class OptimizedDataJoinJob {
 
   /**
    * Submit/run a map/reduce job.
-   * 
+   *
    * @param job
    * @return true for success
    * @throws java.io.IOException
@@ -151,9 +150,9 @@ public class OptimizedDataJoinJob {
     boolean success;
     if (args.length < 8 || args.length > 10) {
       System.out.println("usage: DataJoinJob " + "inputdirs outputdir map_input_file_format "
-                         + "numofParts " + "mapper_class " + "reducer_class "
-                         + "map_output_value_class "
-                         + "output_value_class [maxNumOfValuesPerGroup [descriptionOfJob]]]");
+          + "numofParts " + "mapper_class " + "reducer_class "
+          + "map_output_value_class "
+          + "output_value_class [maxNumOfValuesPerGroup [descriptionOfJob]]]");
       System.exit(-1);
     }
 

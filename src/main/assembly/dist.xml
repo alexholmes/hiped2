@@ -90,6 +90,7 @@
                 <include>guava*.jar</include>
                 <include>guice*.jar</include>
                 <include>hbase*.jar</include>
+                <include>htuple*.jar</include>
                 <include>jopt*.jar</include>
                 <include>libthrift*.jar</include>
                 <include>mysql*.jar</include>

@@ -40,7 +40,7 @@ public class TextDistributedCacheFileReader
     System.out.println("Got line '" + line + "'");
     System.out.println("Got parts '" + StringUtils.join(parts, ",") + "'");
     pair.setKey(parts[0]);
-    if(parts.length > 1) {
+    if (parts.length > 1) {
       pair.setData(parts[1]);
     }
     return pair;

@@ -24,9 +24,9 @@ public class ReplicatedFilterJob extends GenericReplicatedJoin {
 
     FileStatus uniqueUserStatus = fs.getFileStatus(uniqueUsersPath);
 
-    if(uniqueUserStatus.isDir()) {
-      for(FileStatus f: fs.listStatus(uniqueUsersPath)) {
-        if(f.getPath().getName().startsWith("part")) {
+    if (uniqueUserStatus.isDir()) {
+      for (FileStatus f : fs.listStatus(uniqueUsersPath)) {
+        if (f.getPath().getName().startsWith("part")) {
           DistributedCache.addCacheFile(f.getPath().toUri(), conf);
         }
       }
@@ -48,7 +48,7 @@ public class ReplicatedFilterJob extends GenericReplicatedJoin {
     FileInputFormat.setInputPaths(job, usersPath);
     FileOutputFormat.setOutputPath(job, outputPath);
 
-    if(!job.waitForCompletion(true)) {
+    if (!job.waitForCompletion(true)) {
       throw new Exception("Job failed");
     }
   }

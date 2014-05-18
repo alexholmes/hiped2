@@ -39,7 +39,7 @@ public class UniqueHashedKeyJob {
     FileInputFormat.setInputPaths(job, inputPath);
     FileOutputFormat.setOutputPath(job, outputPath);
 
-    if(!job.waitForCompletion(true)) {
+    if (!job.waitForCompletion(true)) {
       throw new Exception("Job failed");
     }
   }
@@ -59,7 +59,7 @@ public class UniqueHashedKeyJob {
         Context context)
         throws IOException, InterruptedException {
       Text outputKey = new Text();
-      for(String key: keys) {
+      for (String key : keys) {
         System.out.println("OutK[" + key + "]");
         outputKey.set(key);
         context.write(outputKey, NullWritable.get());
@@ -68,7 +68,7 @@ public class UniqueHashedKeyJob {
   }
 
   public static class Reduce
-    extends Reducer<Text, NullWritable, Text, NullWritable> {
+      extends Reducer<Text, NullWritable, Text, NullWritable> {
     @Override
     protected void reduce(Text key, Iterable<NullWritable> values,
                           Context context)

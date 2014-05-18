@@ -1,144 +1,159 @@
 package hip.ch5.joins.replicated.simple;
 
+import hip.ch5.joins.User;
+import hip.ch5.joins.UserLog;
+import hip.util.Cli;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class ReplicatedJoin {
-  public static void main(String... args) throws Exception {
-    runJob(new Path(args[0]), new Path(args[1]), new Path(args[2]));
+public class ReplicatedJoin extends Configured implements Tool {
+
+
+  /**
+   * Main entry point for the example.
+   *
+   * @param args arguments
+   * @throws Exception when something goes wrong
+   */
+  public static void main(final String[] args) throws Exception {
+    int res = ToolRunner.run(new Configuration(), new ReplicatedJoin(), args);
+    System.exit(res);
   }
 
-  public static void runJob(Path inputPath,
-                            Path smallFilePath,
-                            Path outputPath)
-      throws Exception {
+  /**
+   * The MapReduce driver - setup and launch the job.
+   *
+   * @param args the command-line arguments
+   * @return the process exit code
+   * @throws Exception if something goes wrong
+   */
+  public int run(final String[] args) throws Exception {
 
-    Configuration conf = new Configuration();
+    Cli cli = Cli.builder().setArgs(args).addOptions(Options.values()).build();
+    int result = cli.runCmd();
 
-    DistributedCache.addCacheFile(smallFilePath.toUri(), conf);
+    if (result != 0) {
+      return result;
+    }
+
+    Path usersPath = new Path(cli.getArgValueAsString(Options.USERS));
+    Path userLogsPath = new Path(cli.getArgValueAsString(Options.USER_LOGS));
+    Path outputPath = new Path(cli.getArgValueAsString(Options.OUTPUT));
+
+    Configuration conf = super.getConf();
 
     Job job = new Job(conf);
 
     job.setJarByClass(ReplicatedJoin.class);
     job.setMapperClass(JoinMap.class);
 
-    job.setInputFormatClass(KeyValueTextInputFormat.class);
+    job.addCacheFile(usersPath.toUri());
+    job.getConfiguration().set(JoinMap.DISTCACHE_FILENAME_CONFIG, usersPath.getName());
 
     job.setNumReduceTasks(0);
 
-    outputPath.getFileSystem(conf).delete(outputPath, true);
-
-    FileInputFormat.setInputPaths(job, inputPath);
+    FileInputFormat.setInputPaths(job, userLogsPath);
     FileOutputFormat.setOutputPath(job, outputPath);
 
-    job.waitForCompletion(true);
+    return job.waitForCompletion(true) ? 0 : 1;
   }
 
-  public static class JoinMap extends Mapper<Text, Text, Text, Text> {
-    private Map<String, List<String>> users = new HashMap<String, List<String>>();
-    private Text outputValue = new Text();
-    private boolean distributedCacheIsSmaller;
-    private File distributedCacheFile;
-    private Context context;
-
-    private List<HashMap<String, List<String>>> partitionedHashes;
-    private List<File> partitionedFiles;
+  public static class JoinMap extends Mapper<LongWritable, Text, Text, Text> {
+    public static final String DISTCACHE_FILENAME_CONFIG = "replicatedjoin.distcache.filename";
+    private Map<String, User> users = new HashMap<String, User>();
 
     @Override
-    protected void setup(
-        Context context)
+    protected void setup(Context context)
         throws IOException, InterruptedException {
-      this.context = context;
 
-      Path[] files = DistributedCache.getLocalCacheFiles(
-          context.getConfiguration());
+      URI[] files = context.getCacheFiles();
 
-      distributedCacheFile = new File(files[0].toString());
-      long distributedCacheFileSize = distributedCacheFile.length();
+      final String distributedCacheFilename = context.getConfiguration().get(DISTCACHE_FILENAME_CONFIG);
 
-      FileSplit split = (FileSplit) context.getInputSplit();
+      boolean found = false;
 
-      long inputSplitSize = split.getLength();
+      for (URI uri : files) {
+        System.out.println("Distcache file: " + uri);
 
-      distributedCacheIsSmaller = (distributedCacheFileSize < inputSplitSize);
+        File path = new File(uri.getPath());
 
-      System.out.println("distributedCacheIsSmaller = " + distributedCacheIsSmaller);
-
-      if(distributedCacheIsSmaller) {
-        for(String line: FileUtils.readLines(distributedCacheFile)) {
-          String[] parts = StringUtils.split(line, "\t", 2);
-          addToCache(parts[0], parts[1]);
+        if (path.getName().equals(distributedCacheFilename)) {
+          loadCache(path);
+          found = true;
+          break;
         }
       }
-    }
 
-    private void addToCache(String key, String value) {
-      List<String> values = users.get(key);
-      if(values == null) {
-        values = new ArrayList<String>();
-        users.put(key, values);
-      }
-      values.add(value);
-    }
-
-    @Override
-    protected void map(Text key, Text value, Context context)
-        throws IOException, InterruptedException {
-      System.out.println("K[" + key + "]");
-
-      if(distributedCacheIsSmaller) {
-        List<String> cacheValues = users.get(key.toString());
-        if(cacheValues != null) {
-          join(key, value.toString(), cacheValues);
-        }
-      } else {
-        addToCache(key.toString(), value.toString());
+      if (!found) {
+        throw new IOException("Unable to find file " + distributedCacheFilename);
       }
     }
 
-
-    public void join(Text key, String value1, List<String> values)
-        throws IOException, InterruptedException {
-      StringBuilder sb = new StringBuilder();
-      for(String value: values) {
-        sb.setLength(0);
-        sb.append(value1).append("\t").append(value);
-        outputValue.set(sb.toString());
-        context.write(key, outputValue);
+    private void loadCache(File file) throws IOException {
+      for (String line : FileUtils.readLines(file)) {
+        User user = User.fromString(line);
+        users.put(user.getName(), user);
       }
     }
 
     @Override
-    protected void cleanup(
-        Context context)
+    protected void map(LongWritable offset, Text value, Context context)
         throws IOException, InterruptedException {
-      if(!distributedCacheIsSmaller) {
-        System.out.println("Outputting in cleanup");
-        for(String line: FileUtils.readLines(distributedCacheFile)) {
-          String[] parts = StringUtils.split(line, "\t", 2);
-          List<String> cacheValues = users.get(parts[0]);
-          if(cacheValues != null) {
-            join(new Text(parts[0]), parts[1], cacheValues);
-          }
-        }
+
+      UserLog userLog = UserLog.fromText(value);
+      User user = users.get(userLog.getName());
+      if (user != null) {
+        context.write(
+            new Text(user.toString()),
+            new Text(userLog.toString()));
       }
+    }
+  }
+
+  public enum Options implements Cli.ArgGetter {
+    USERS(Cli.ArgBuilder.builder().hasArgument(true).required(true).description("User input file or directory")),
+    USER_LOGS(Cli.ArgBuilder.builder().hasArgument(true).required(true).description("User logs input file or directory")),
+    OUTPUT(Cli.ArgBuilder.builder().hasArgument(true).required(true).description("HDFS output directory"));
+    private final Cli.ArgInfo argInfo;
+
+    Options(final Cli.ArgBuilder builder) {
+      this.argInfo = builder.setArgName(name()).build();
+    }
+
+    @Override
+    public Cli.ArgInfo getArgInfo() {
+      return argInfo;
+    }
+  }
+
+  public enum UserOptions implements Cli.ArgGetter {
+    USERS(Cli.ArgBuilder.builder().hasArgument(true).required(true).description("User input file or directory")),
+    OUTPUT(Cli.ArgBuilder.builder().hasArgument(true).required(true).description("HDFS output directory"));
+    private final Cli.ArgInfo argInfo;
+
+    UserOptions(final Cli.ArgBuilder builder) {
+      this.argInfo = builder.setArgName(name()).build();
+    }
+
+    @Override
+    public Cli.ArgInfo getArgInfo() {
+      return argInfo;
     }
   }
 }
