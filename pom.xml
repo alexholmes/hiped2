@@ -325,6 +325,21 @@
                             <pomFile>${basedir}/lib/htuple-core-0.1.1.xml</pomFile>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>install-giraph</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>org.apache.giraph</groupId>
+                            <artifactId>giraph-core-custom</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/lib/giraph-1.0.0-for-hadoop-0.20.203.0.jar</file>
+                            <pomFile>${basedir}/lib/giraph-1.0.0-for-hadoop-0.20.203.0.xml</pomFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -641,6 +656,27 @@
             <version>4.5-SNAPSHOT</version>
         </dependency>
 
+        <!--Apache Twill-->
+        <dependency>
+            <groupId>org.apache.twill</groupId>
+            <artifactId>twill-api</artifactId>
+            <version>0.2.0-incubating</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.twill</groupId>
+            <artifactId>twill-yarn</artifactId>
+            <version>0.2.0-incubating</version>
+        </dependency>
+
+
+        <!-- Giraph -->
+        <!-- Their Maven stuff don't work, so we're having to install it ourselves -->
+        <dependency>
+            <groupId>org.apache.giraph</groupId>
+            <artifactId>giraph-core-custom</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- Compression -->
         <dependency>
             <groupId>com.hadoop.gplcompression</groupId>
@@ -660,6 +696,13 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1</version>
+        </dependency>
+
+        <!-- HyperLogLog -->
+        <dependency>
+            <groupId>net.agkn</groupId>
+            <artifactId>hll</artifactId>
+            <version>1.5.1</version>
         </dependency>
 
         <!-- Logging -->

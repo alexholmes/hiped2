@@ -87,9 +87,12 @@
                 <include>avro-tools*.jar</include>
                 <include>commons*.jar</include>
                 <include>elephant-bird*.jar</include>
+                <include>fastutil*.jar</include>
+                <include>giraph*.jar</include>
                 <include>guava*.jar</include>
                 <include>guice*.jar</include>
                 <include>hbase*.jar</include>
+                <include>hll*.jar</include>
                 <include>htuple*.jar</include>
                 <include>jopt*.jar</include>
                 <include>libthrift*.jar</include>

@@ -2,9 +2,7 @@
 
 # Script to launch examples from the book "Hadoop in Practice".
 
-home=`dirname "${HIP_BIN-$0}"`
-home=`dirname "${home}"`
-home=`cd "$home"; pwd`
+home="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd -P )"
 
 function print_usage(){
   echo "Usage: $(basename $0) <class> ARGS"
