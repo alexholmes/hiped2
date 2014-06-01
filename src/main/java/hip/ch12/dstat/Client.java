@@ -28,6 +28,7 @@ import org.apache.hadoop.yarn.util.Records;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple YARN client which creates and submits an application and waits
@@ -123,22 +124,22 @@ public class Client {
     System.out.println("Submitting application " + appId);
     yarnClient.submitApplication(appContext);
 
-ApplicationReport report = yarnClient.getApplicationReport(appId);
-YarnApplicationState state = report.getYarnApplicationState();
+    ApplicationReport report = yarnClient.getApplicationReport(appId);
+    YarnApplicationState state = report.getYarnApplicationState();
 
-EnumSet<YarnApplicationState> terminalStates =
-    EnumSet.of(YarnApplicationState.FINISHED,
-        YarnApplicationState.KILLED,
-        YarnApplicationState.FAILED);
+    EnumSet terminalStates =
+        EnumSet.of(YarnApplicationState.FINISHED,
+            YarnApplicationState.KILLED,
+            YarnApplicationState.FAILED);
 
 //////////////////////////////////////////////////
 // wait for the application to complete
 //////////////////////////////////////////////////
-while (!terminalStates.contains(state)) {
-  Thread.sleep(100);
-  report = yarnClient.getApplicationReport(appId);
-  state = report.getYarnApplicationState();
-}
+    while (!terminalStates.contains(state)) {
+      TimeUnit.SECONDS.sleep(1);
+      report = yarnClient.getApplicationReport(appId);
+      state = report.getYarnApplicationState();
+    }
 
     System.out.printf("Application %s finished with state %s%n",
         appId, state);

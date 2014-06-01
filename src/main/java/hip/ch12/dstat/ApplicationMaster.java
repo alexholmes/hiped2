@@ -1,6 +1,7 @@
 package hip.ch12.dstat;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.ApplicationConstants;
@@ -26,75 +27,84 @@ public class ApplicationMaster {
 
   public static void main(String[] args) throws Exception {
 
-    Configuration conf = new YarnConfiguration();
+    try {
 
-// create a client to talk to the ResourceManager
-    AMRMClient<ContainerRequest> rmClient = AMRMClient.createAMRMClient();
-    rmClient.init(conf);
-    rmClient.start();
+      Configuration conf = new YarnConfiguration();
 
-// create a client to talk to the NodeManagers
-    NMClient nmClient = NMClient.createNMClient();
-    nmClient.init(conf);
-    nmClient.start();
+  // create a client to talk to the ResourceManager
+      AMRMClient<ContainerRequest> rmClient = AMRMClient.createAMRMClient();
+      rmClient.init(conf);
+      rmClient.start();
 
-// register with ResourceManager
-    System.out.println("registerApplicationMaster: pending");
-    rmClient.registerApplicationMaster("", 0, "");
-    System.out.println("registerApplicationMaster: complete");
+  // create a client to talk to the NodeManagers
+      NMClient nmClient = NMClient.createNMClient();
+      nmClient.init(conf);
+      nmClient.start();
 
-// Priority for worker containers - priorities are intra-application
-    Priority priority = Records.newRecord(Priority.class);
-    priority.setPriority(0);
+  // register with ResourceManager
+      System.out.println("registerApplicationMaster: pending");
+      rmClient.registerApplicationMaster("", 0, "");
+      System.out.println("registerApplicationMaster: complete");
 
-// Resource requirements for worker containers
-    Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(128);
-    capability.setVirtualCores(1);
+  // Priority for worker containers - priorities are intra-application
+      Priority priority = Records.newRecord(Priority.class);
+      priority.setPriority(0);
 
-// Make container requests to ResourceManager
-    ContainerRequest containerAsk = new ContainerRequest(capability, null, null, priority);
-    System.out.println("adding container ask:" + containerAsk);
-    rmClient.addContainerRequest(containerAsk);
+  // Resource requirements for worker containers
+      Resource capability = Records.newRecord(Resource.class);
+      capability.setMemory(128);
+      capability.setVirtualCores(1);
 
-    final String cmd = "/usr/bin/vmstat";
+  // Make container requests to ResourceManager
+      ContainerRequest containerAsk = new ContainerRequest(capability, null, null, priority);
+      System.out.println("adding container ask:" + containerAsk);
+      rmClient.addContainerRequest(containerAsk);
 
-// Obtain allocated containers and launch
-    boolean allocatedContainer = false;
-    while (!allocatedContainer) {
-      AllocateResponse response = rmClient.allocate(0);
-      for (Container container : response.getAllocatedContainers()) {
-        allocatedContainer = true;
+      final String cmd = "/usr/bin/vmstat";
 
-        // Launch container by create ContainerLaunchContext
-        ContainerLaunchContext ctx =
-            Records.newRecord(ContainerLaunchContext.class);
-        ctx.setCommands(
-            Collections.singletonList(
-                String.format("%s 1>%s/stdout 2>%s/stderr",
-                    cmd,
-                    ApplicationConstants.LOG_DIR_EXPANSION_VAR,
-                    ApplicationConstants.LOG_DIR_EXPANSION_VAR)
-            ));
-        System.out.println("Launching container " + container);
-        nmClient.startContainer(container, ctx);
+  // Obtain allocated containers and launch
+      boolean allocatedContainer = false;
+      while (!allocatedContainer) {
+        System.out.println("allocate");
+        AllocateResponse response = rmClient.allocate(0);
+        for (Container container : response.getAllocatedContainers()) {
+          allocatedContainer = true;
+
+          // Launch container by create ContainerLaunchContext
+          ContainerLaunchContext ctx =
+              Records.newRecord(ContainerLaunchContext.class);
+          ctx.setCommands(
+              Collections.singletonList(
+                  String.format("%s 1>%s/stdout 2>%s/stderr",
+                      cmd,
+                      ApplicationConstants.LOG_DIR_EXPANSION_VAR,
+                      ApplicationConstants.LOG_DIR_EXPANSION_VAR)
+              ));
+          System.out.println("Launching container " + container);
+          nmClient.startContainer(container, ctx);
+        }
+        TimeUnit.SECONDS.sleep(1);
       }
-      Thread.sleep(100);
-    }
 
-    // Now wait for containers to complete
-    boolean completedContainer = false;
-    while (!completedContainer) {
-      AllocateResponse response = rmClient.allocate(0);
-      for (ContainerStatus status : response.getCompletedContainersStatuses()) {
-        completedContainer = true;
-        System.out.println("Completed container " + status);
+      // Now wait for containers to complete
+      boolean completedContainer = false;
+      while (!completedContainer) {
+        System.out.println("allocate (wait)");
+        AllocateResponse response = rmClient.allocate(0);
+        for (ContainerStatus status : response.getCompletedContainersStatuses()) {
+          completedContainer = true;
+          System.out.println("Completed container " + status);
+        }
+        TimeUnit.SECONDS.sleep(1);
       }
-      Thread.sleep(100);
-    }
 
-// Un-register with ResourceManager
-    rmClient.unregisterApplicationMaster(
-        FinalApplicationStatus.SUCCEEDED, "", "");
+      System.out.println("unregister");
+  // Un-register with ResourceManager
+      rmClient.unregisterApplicationMaster(
+          FinalApplicationStatus.SUCCEEDED, "", "");
+      System.out.println("exiting");
+    } catch(Throwable t) {
+      t.printStackTrace();
+    }
   }
 }
