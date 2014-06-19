@@ -25,6 +25,16 @@
             <fileMode>0777</fileMode>
             <directoryMode>0777</directoryMode>
         </fileSet>
+        <!-- R Scripts -->
+        <fileSet>
+            <directory>src/main/R</directory>
+            <outputDirectory>/R</outputDirectory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+            <fileMode>0777</fileMode>
+            <directoryMode>0777</directoryMode>
+        </fileSet>
         <!-- Configuration files -->
         <fileSet>
             <directory>src/main/conf</directory>
@@ -96,6 +106,7 @@
                 <include>htuple*.jar</include>
                 <include>jopt*.jar</include>
                 <include>libthrift*.jar</include>
+                <include>mahout*.jar</include>
                 <include>mysql*.jar</include>
                 <include>opencsv*.jar</include>
                 <include>parquet*.jar</include>

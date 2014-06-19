@@ -426,7 +426,13 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
             <version>${hadoop.version}</version>
-            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <classifier>tests</classifier>
         </dependency>
 
         <dependency>
@@ -458,6 +464,14 @@
             <artifactId>hadoop-datajoin</artifactId>
             <version>${hadoop.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-yarn-server-tests</artifactId>
+            <version>${hadoop.version}</version>
+            <classifier>tests</classifier>
+        </dependency>
+
 
         <!-- HBase -->
         <dependency>
@@ -667,6 +681,14 @@
             <version>1.0.0</version>
         </dependency>
 
+        <!-- Mahout -->
+        <dependency>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-core</artifactId>
+            <version>0.9</version>
+        </dependency>
+
+
         <!-- Compression -->
         <dependency>
             <groupId>com.hadoop.gplcompression</groupId>
@@ -729,7 +751,16 @@
             <groupId>org.apache.mrunit</groupId>
             <classifier>hadoop2</classifier>
             <artifactId>mrunit</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.mrunit</groupId>
+            <classifier>hadoop1</classifier>
+            <artifactId>mrunit</artifactId>
+            <version>1.1.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
