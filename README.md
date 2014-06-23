@@ -24,7 +24,7 @@ Doing so will mean that running your first example is just three steps away:
 
 3. The examples in the book all use the `hip` script located in `bin/hip` to
 execute the examples. While it's not required, it's recommended that you
-add hip-<version>/bin to your
+add `hip-<version>/bin` to your
 path so that you can simply execute `hip` and execute the examples in the
 book by directly copy-pasting the commands.
 
