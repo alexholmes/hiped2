@@ -100,6 +100,7 @@
                 <include>fastutil*.jar</include>
                 <include>giraph*.jar</include>
                 <include>guava*.jar</include>
+                <include>geoip*.jar</include>
                 <include>guice*.jar</include>
                 <include>hbase*.jar</include>
                 <include>hll*.jar</include>

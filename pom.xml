@@ -717,6 +717,13 @@
             <version>1.5.1</version>
         </dependency>
 
+        <!-- MaxMind Geolocation -->
+        <dependency>
+            <groupId>com.maxmind.geoip</groupId>
+            <artifactId>geoip-api</artifactId>
+            <version>1.2.13</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
