@@ -1,6 +1,6 @@
 package hip.ch8;
 
-import hip.ch5.sort.secondary.Person;
+import hip.ch6.sort.secondary.Person;
 import org.apache.hadoop.io.WritableComparator;
 
 public class PersonBinaryComparator extends WritableComparator {

@@ -1,9 +1,0 @@
-{
-  "name": "StockAvg",
-  "type": "record",
-  "namespace": "hip.ch4.avro.gen",
-  "fields": [
-    {"name": "symbol",    "type": "string"},
-    {"name": "avg",      "type": "double"}
-  ]
-}

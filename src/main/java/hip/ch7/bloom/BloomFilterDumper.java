@@ -1,6 +1,6 @@
 package hip.ch7.bloom;
 
-import hip.ch4.avro.AvroBytesRecord;
+import hip.ch3.avro.AvroBytesRecord;
 import org.apache.avro.file.DataFileStream;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;

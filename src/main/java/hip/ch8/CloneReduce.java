@@ -1,7 +1,7 @@
 package hip.ch8;
 
 
-import hip.ch5.sort.secondary.Person;
+import hip.ch6.sort.secondary.Person;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;

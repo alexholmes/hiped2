@@ -1,6 +1,6 @@
 package hip.ch7.bloom;
 
-import hip.ch4.avro.AvroBytesRecord;
+import hip.ch3.avro.AvroBytesRecord;
 import hip.util.Cli;
 import hip.util.CliCommonOpts;
 import org.apache.avro.generic.GenericRecord;

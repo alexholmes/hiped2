@@ -2,7 +2,6 @@ package hip.ch7.shortestpath;
 
 
 import hip.util.Cli;
-import hip.util.CliCommonOpts;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang.StringUtils;
