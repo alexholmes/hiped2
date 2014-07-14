@@ -30,7 +30,7 @@ for file in `find ${home}/lib -type f | grep -v avro-tools`; do
   LIBJARS=${LIBJARS},$file
 done
 
-LIBJARS=${home}/lib/jopt-simple-4.5.jar,${LIBJARS}
+LIBJARS=${home}/lib/jopt-simple-4.5.jar${LIBJARS}
 
 HIP_JAR=${home}/`ls -1 | grep "hip-[0-9\.]+\.jar"`
 
