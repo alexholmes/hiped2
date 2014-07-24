@@ -49,7 +49,7 @@
             <directory>test-data</directory>
             <outputDirectory>/test-data</outputDirectory>
             <includes>
-                <include>*</include>
+                <include>**/**</include>
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
