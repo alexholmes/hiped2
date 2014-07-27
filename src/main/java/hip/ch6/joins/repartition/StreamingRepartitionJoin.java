@@ -126,7 +126,7 @@ public class StreamingRepartitionJoin extends Configured implements Tool {
 
       Tuple outputKey = new Tuple();
       outputKey.setString(KeyFields.USER, userLog.getName());
-      outputKey.setInt(KeyFields.DATASET, USERS);
+      outputKey.setInt(KeyFields.DATASET, USER_LOGS);
 
       Tuple outputValue = new Tuple();
       outputValue.setInt(ValueFields.DATASET, USER_LOGS);
@@ -143,9 +143,7 @@ public class StreamingRepartitionJoin extends Configured implements Tool {
     @Override
     protected void reduce(Tuple key, Iterable<Tuple> values, Context context) throws IOException, InterruptedException {
       users = Lists.newArrayList();
-
       for (Tuple tuple : values) {
-        System.out.println("Tuple: " + tuple);
         switch (tuple.getInt(ValueFields.DATASET)) {
           case USERS: {
             users.add(tuple.getString(ValueFields.DATA));
