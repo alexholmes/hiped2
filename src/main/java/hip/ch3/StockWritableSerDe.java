@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.serde.Constants;
+import org.apache.hadoop.hive.serde.serdeConstants;
 import org.apache.hadoop.hive.serde2.*;
 import org.apache.hadoop.hive.serde2.objectinspector.*;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorFactory;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class StockWritableSerDe implements SerDe {
+public class StockWritableSerDe extends AbstractSerDe {
 
   public static final Log LOG = LogFactory
       .getLog(StockWritableSerDe.class.getName());
@@ -45,8 +46,8 @@ public class StockWritableSerDe implements SerDe {
   }
 
   public void initialize(Configuration job, Properties tbl) throws SerDeException {
-    String columnNameProperty = tbl.getProperty(Constants.LIST_COLUMNS);
-    String columnTypeProperty = tbl.getProperty(Constants.LIST_COLUMN_TYPES);
+    String columnNameProperty = tbl.getProperty(serdeConstants.LIST_COLUMNS);
+    String columnTypeProperty = tbl.getProperty(serdeConstants.LIST_COLUMN_TYPES);
 
     columnNames = Arrays.asList(columnNameProperty.split(","));
     List<TypeInfo> columnTypes = TypeInfoUtils

@@ -64,7 +64,7 @@
         </fileSet>
         <!-- Schema's -->
         <fileSet>
-            <directory>src/main/java/hip/ch5/avro/</directory>
+            <directory>src/main/java/hip/ch3/avro/</directory>
             <outputDirectory>/schema</outputDirectory>
             <includes>
                 <include>*.avsc</include>
@@ -72,7 +72,7 @@
             <fileMode>755</fileMode>
         </fileSet>
         <fileSet>
-            <directory>src/main/java/hip/ch5/proto/</directory>
+            <directory>src/main/java/hip/ch3/proto/</directory>
             <outputDirectory>/schema</outputDirectory>
             <includes>
                 <include>*.proto</include>
@@ -106,6 +106,7 @@
                 <include>hll*.jar</include>
                 <include>htuple*.jar</include>
                 <include>jopt*.jar</include>
+                <include>json-simple*.jar</include>
                 <include>libthrift*.jar</include>
                 <include>mahout*.jar</include>
                 <include>mysql*.jar</include>
