@@ -137,10 +137,12 @@ public class BloomFilterCreator extends Configured implements Tool {
     @Override
     public void close() throws IOException {
       System.out.println(filter);
-      collector.collect(
-          new AvroWrapper<GenericRecord>(
-              AvroBytesRecord.toGenericRecord(filter)),
-          NullWritable.get());
+      if (collector != null) {
+        collector.collect(
+            new AvroWrapper<GenericRecord>(
+                AvroBytesRecord.toGenericRecord(filter)),
+            NullWritable.get());
+      }
     }
 
     @Override
