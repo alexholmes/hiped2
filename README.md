@@ -1,10 +1,8 @@
 Source code for Hadoop in Practice, Second Edition
 ==================================================
 
-This project contains the source code that accompanies the book "Hadoop in Practice, Second Edition".
-
-The book is currently in [MEAP](http://www.manning.com/holmes2/) form, which gives you early access to chapters
-as they are being completed.
+This project contains the source code that accompanies the book
+[Hadoop in Practice, Second Edition](http://www.manning.com/holmes2/).
 
 ## License
 
