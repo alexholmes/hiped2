@@ -58,7 +58,7 @@
             <directory>src/main/oozie</directory>
             <outputDirectory>/oozie</outputDirectory>
             <includes>
-                <include>*</include>
+                <include>**/**</include>
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
